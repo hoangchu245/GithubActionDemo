@@ -36,6 +36,12 @@ jobs:
           echo "${{ inputs.TEST_TYPE }}" | tr '[:lower:]' '[:upper:]'
           echo "${{ inputs.BROWSER }}" | tr '[:lower:]' '[:upper:]'
 
+      - name: 'Create env file'
+        run: |
+          touch .env
+          echo {{ inputs.ENV }} >> .env
+          cat .env
+      
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
