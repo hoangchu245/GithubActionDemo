@@ -52,7 +52,13 @@ jobs:
       - name: Setup Browser
         if: ${{inputs.BROWSER == 'Edge' }}
         uses: browser-actions/setup-edge@v1
-  
+
+      - name: Install ChromeDriver
+        if: ${{ inputs.BROWSER == 'Chrome' }}
+        run: |
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
+          npm install chromedriver@$(npm view chromedriver versions --json | grep -Eo "\"${CHROME_VERSION}\.[0-9]+\"" | tail -1 | tr -d '"')
+
       - name: Install dependencies
         run: |
           cd src/ui-selenium-js
