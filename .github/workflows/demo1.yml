@@ -5,11 +5,13 @@ on:
       ENV:
         description: 'Environment'
         required: true
+        type: choice
         default: 'dev'
         options: ['dev', 'qa', 'ct', 'prod']
       TEST_TYPE:
         description: 'Test Type'
         required: true
+        type: choice
         default: 'smoke'
         options: ['smoke', 'sanity', 'regression']
 
