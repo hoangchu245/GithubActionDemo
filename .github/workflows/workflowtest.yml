@@ -61,7 +61,7 @@ jobs:
       - name: Run demo
         run: |
           cd src/ui-selenium-js
-            bash runFeature_Demo.sh ${{ inputs.BROWSER }}
+          bash runFeature_Demo.sh ${{ inputs.BROWSER }}
 
       - name: Publish artifact
         uses: actions/upload-artifact@v2
