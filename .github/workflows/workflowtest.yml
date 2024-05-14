@@ -50,4 +50,14 @@ jobs:
       - name: Setup Browser
         if: ${{inputs.BROWSER == 'Edge' }}
         uses: browser-actions/setup-edge@v1
+        
+      - name: Run test cases
+        run: |
+          cd src/ui-selenium-js
+          bash runFeature_Demo.sh chrome
 
+      - name: Publish artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: TestResults_${{ inputs.TEST_TYPE }}_${{ inputs.ENV }}_${{ inputs.BROWSER }}
+          path: path/to/test-results
