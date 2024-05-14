@@ -30,3 +30,21 @@ jobs:
           echo "${{ inputs.ENV }}" | tr '[:upper:]' '[:lower:]'
           echo "${{ inputs.TEST_TYPE }}" | tr '[:lower:]' '[:upper:]'
           echo "${{ inputs.BROWSER }}" | tr '[:lower:]' '[:upper:]'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.16'
+
+      - name: Setup Browser
+        if: ${{inputs.BROWSER == 'Chrome' }}
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Setup Browser
+        if: ${{nputs.BROWSER == 'Firefox' }}
+        uses: browser-actions/setup-firefox@v1
+
+      - name: Setup Browser
+        if: ${{inputs.BROWSER == 'Edge' }}
+        uses: browser-actions/setup-edge@v1
+
