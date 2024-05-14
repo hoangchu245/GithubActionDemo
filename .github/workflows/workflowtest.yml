@@ -1,44 +1,32 @@
-name: Test Workflow
+name: Automated Testing Workflow
 
 on:
   workflow_dispatch:
+    #2.1 define a workflow_dispatch event with 3 inputs:
     inputs:
       ENV:
-        description: 'Select environment'
+        description: 'Environment'
         required: true
         default: 'DEV'
-        type: choice
-        options:
-          - DEV
-          - QA
-          - CT
-          - PROD
+        options: ['DEV', 'QA', 'CT', 'PROD']
       TEST_TYPE:
-        description: 'Select test type'
+        description: 'Test Type'
         required: true
         default: 'Smoke'
-        type: choice
-        options:
-          - Smoke
-          - Sanity
-          - Regression
+        options: ['Smoke', 'Sanity', 'Regression']
       BROWSER:
-        description: 'Select browser'
+        description: 'Browser'
         required: true
         default: 'Chrome'
-        type: choice
-        options:
-          - Chrome
-          - Firefox
-          - Edge
+        options: ['Chrome', 'Firefox', 'Edge']
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Convert string to uppercase
-      run: echo "::set-output name=uppercase::${{inputs.ENV }}${{inputs.TEST_TYPE }}${{inputs.BROWSER }}" | tr '[:lower:]' '[:upper:]'
-    
-    - name: Convert string to lowercase
-      run: echo "::set-output name=lowercase::${{inputs.ENV }}${{inputs.TEST_TYPE }}${{nputs.BROWSER }}" | tr '[:upper:]' '[:lower:]'
+      - name: Convert string to uppercase/lowercase
+        run: |
+          echo "${{ inputs.ENV }}" | tr '[:upper:]' '[:lower:]'
+          echo "${{ inputs.TEST_TYPE }}" | tr '[:lower:]' '[:upper:]'
+          echo "${{ inputs.BROWSER }}" | tr '[:lower:]' '[:upper:]'
