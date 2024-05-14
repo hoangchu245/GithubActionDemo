@@ -38,7 +38,7 @@ jobs:
 
     steps:
     - name: Convert string to uppercase
-      run: echo "::set-output name=uppercase::${{ github.event.inputs.ENV }}${{ github.event.inputs.TEST_TYPE }}${{ github.event.inputs.BROWSER }}" | tr '[:lower:]' '[:upper:]'
+      run: echo "::set-output name=uppercase::${{inputs.ENV }}${{inputs.TEST_TYPE }}${{inputs.BROWSER }}" | tr '[:lower:]' '[:upper:]'
     
     - name: Convert string to lowercase
-      run: echo "::set-output name=lowercase::${{ github.event.inputs.ENV }}${{ github.event.inputs.TEST_TYPE }}${{ github.event.inputs.BROWSER }}" | tr '[:upper:]' '[:lower:]'
+      run: echo "::set-output name=lowercase::${{inputs.ENV }}${{inputs.TEST_TYPE }}${{nputs.BROWSER }}" | tr '[:upper:]' '[:lower:]'
