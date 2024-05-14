@@ -53,6 +53,7 @@ jobs:
         
       - name: Run test cases
         run: |
+          npm install
           cd src/ui-selenium-js
           bash runFeature_Demo.sh chrome
 
