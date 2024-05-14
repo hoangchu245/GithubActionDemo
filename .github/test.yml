@@ -1,0 +1,84 @@
+name: Test Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      ENV:
+        description: 'Select environment'
+        required: true
+        default: 'DEV'
+        type: choice
+        options:
+          - DEV
+          - QA
+          - CT
+          - PROD
+      TEST_TYPE:
+        description: 'Select test type'
+        required: true
+        default: 'Smoke'
+        type: choice
+        options:
+          - Smoke
+          - Sanity
+          - Regression
+      BROWSER:
+        description: 'Select browser'
+        required: true
+        default: 'Chrome'
+        type: choice
+        options:
+          - Chrome
+          - Firefox
+          - Edge
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Convert string to uppercase
+      run: echo "::set-output name=uppercase::${{ github.event.inputs.ENV }}${{ github.event.inputs.TEST_TYPE }}${{ github.event.inputs.BROWSER }}" | tr '[:lower:]' '[:upper:]'
+    
+    - name: Convert string to lowercase
+      run: echo "::set-output name=lowercase::${{ github.event.inputs.ENV }}${{ github.event.inputs.TEST_TYPE }}${{ github.event.inputs.BROWSER }}" | tr '[:upper:]' '[:lower:]'
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.16'
+
+    - name: Setup Browser
+      if: ${{ github.event.inputs.BROWSER == 'Chrome' }}
+      uses: browser-actions/setup-chrome@v1
+
+    - name: Setup Browser
+      if: ${{ github.event.inputs.BROWSER == 'Firefox' }}
+      uses: browser-actions/setup-firefox@v1
+
+    - name: Setup Browser
+      if: ${{ github.event.inputs.BROWSER == 'Edge' }}
+      uses: browser-actions/setup-edge@v1
+
+    - name: Config .env file with content from repository secrets
+        run: |
+          echo "ESS_PASSWORD=${{ secrets.ESS_PASSWORD }}" >> .env
+          echo "ESS_USERNAME=${{ secrets.ESS_USERNAME }}" >> .env
+          echo "HRM_PASSWORD_ADMIN=${{ secrets.HRM_PASSWORD_ADMIN }}" >> .env
+          echo "HRM_PASSWORD_ESS=${{ secrets.HRM_PASSWORD_ESS }}" >> .env
+          echo "HRM_USERNAME_ADMIN=${{ secrets.HRM_USERNAME_ADMIN }}" >> .env
+          echo "HRM_USERNAME_ESS=${{ secrets.HRM_USERNAME_ESS }}" >> .env
+          echo "TOKEN=${{ secrets.TOKEN }}" >> .env
+    - name: Run test cases
+        run: |
+          cd src/ui-selenium-js
+          bash runFeature_Demo.sh chrome
+
+    - name: Publish artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: TestResults_${{ github.event.inputs.TEST_TYPE }}_${{ github.event.inputs.ENV }}_${{ github.event.inputs.BROWSER }}
+        path: path/to/test-results
