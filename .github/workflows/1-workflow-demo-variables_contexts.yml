@@ -1,0 +1,48 @@
+name: 1. DEMO - Sample Workflow
+run-name: ${{ github.actor }} is testing out Demo Workflow 🚀
+# on: [push]
+on:
+  workflow_dispatch:
+env:
+  color: Green
+  shape: Circle
+jobs:
+  Job-1:
+    name: Job with GitHub contexts
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Actor is ${{ github.actor }}"
+      - run: echo "Repository is ${{ github.repository }}"
+      - run: echo "Branch is ${{ github.ref }}"
+      - run: echo "Job ID is ${{ github.job }}"
+  Job-2:
+    name: Job with env contexts
+    runs-on: ubuntu-latest
+    env:
+      shape: Square
+    steps:
+      - run: echo "1. This is the ${{ env.color }} ${{ env.shape }}"
+      - run: echo "2. This is the ${{ env.color }} ${{ env.shape }}"
+        env:
+          color: Red
+          shape: Triangle
+  Job-3:
+    name: Job with vars contexts
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "1. You get a score of ${{ vars.score }}"
+      - run: echo "2. You get a score of ${{ env.score }}"
+        env:
+          score: ${{ vars.score }}
+  Job-4:
+    name: Job with secrets contexts
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - run: |
+          gh issue --repo ${{ github.repository }} \
+            create --title "Issue title 2" --body "Issue body B"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

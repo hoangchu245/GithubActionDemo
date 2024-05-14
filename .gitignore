@@ -1,0 +1,19 @@
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Cucumber reports
+cucumber-reports/
+/test-output.html
+/src/api-cucumber-java/test-output.html
+/src/ui-selenium-js/.env
+/src/ui-selenium-js/report/
+/src/ui-selenium-js/node_modules/

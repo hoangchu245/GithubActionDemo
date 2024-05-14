@@ -1,0 +1,8 @@
+name: 4. DEMO - Automation Test Workflow - UI Selenium JS
+on:
+  workflow_dispatch:
+jobs:
+  regression-test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Actor is ${{ github.actor }}"

@@ -1,0 +1,42 @@
+name: 2. DEMO - On-Demand Workflow
+on:
+  workflow_dispatch:
+    name: on-demand
+    inputs:
+      YOUR_NAME:
+        required: true
+        description: 'Who are you?'
+        default: 'Hero'
+      YOUR_ROLE:
+        type: choice
+        required: true
+        options:
+          - DEV
+          - QA
+          - BA
+          - PM
+        default: "QA"
+        description: "Your role"
+jobs:
+  Input-Job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Your name is ${{ github.event.inputs.YOUR_NAME }} and your role is ${{ github.event.inputs.YOUR_ROLE }}."
+  Output-Job1:
+    runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.step1.outputs.test }}
+      output2: ${{ steps.step2.outputs.test }}
+    steps:
+      - id: step1
+        run: echo "test=hello" >> "$GITHUB_OUTPUT"
+      - id: step2
+        run: echo "test=world" >> "$GITHUB_OUTPUT"
+  Output-Job2:
+    runs-on: ubuntu-latest
+    needs: Output-Job1
+    steps:
+      - env:
+          OUTPUT1: ${{needs.Output-Job1.outputs.output1}}
+          OUTPUT2: ${{needs.Output-Job1.outputs.output2}}
+        run: echo "$OUTPUT1 $OUTPUT2"
