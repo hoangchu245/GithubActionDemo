@@ -52,9 +52,6 @@ jobs:
       - name: Setup Browser
         if: ${{inputs.BROWSER == 'Edge' }}
         uses: browser-actions/setup-edge@v1
-
-      - name: Install dependencies
-        run: npm install
   
       - name: Run demo
         run: |
