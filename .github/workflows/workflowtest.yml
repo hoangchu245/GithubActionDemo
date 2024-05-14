@@ -26,8 +26,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
       - name: Convert string to uppercase/lowercase
         run: |
           echo "${{ inputs.ENV }}" | tr '[:upper:]' '[:lower:]'
@@ -54,6 +56,9 @@ jobs:
       - name: Run test cases
         run: |
           npm install
+
+      - name: Run test cases
+        run: |
           cd src/ui-selenium-js
           bash runFeature_Demo.sh chrome
 
