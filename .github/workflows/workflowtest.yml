@@ -37,9 +37,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
     - name: Convert string to uppercase
       run: echo "::set-output name=uppercase::${{ github.event.inputs.ENV }}${{ github.event.inputs.TEST_TYPE }}${{ github.event.inputs.BROWSER }}" | tr '[:lower:]' '[:upper:]'
     
