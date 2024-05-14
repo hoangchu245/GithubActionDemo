@@ -1,8 +1,33 @@
 name: 3. DEMO - Automation Test Workflow - API Cucumber Java
 on:
+  push:
+    branches:
+      - '2627_HoangChu'
   workflow_dispatch:
+    inputs:
+      ENV:
+        description: 'Environment'
+        required: true
+        type: choice
+        default: 'dev'
+        options: ['dev', 'qa', 'ct', 'prod']
+      TEST_TYPE:
+        description: 'Test Type'
+        required: true
+        type: choice
+        default: 'smoke'
+        options: ['smoke', 'sanity', 'regression']
+
 jobs:
+  test-summarry:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show test run information
+        run: |
+          echo "BDD Tags: @${{ github.event.inputs.TEST_TYPE }}_${{ github.event.inputs.ENV }}"
+          
   regression-test:
+    needs: test-summarry
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -17,7 +42,7 @@ jobs:
       - name: Test run
         run: |
           cd src/api-cucumber-java
-          mvn clean test -Dcucumber.options="--tags @regression_qa"
+          mvn clean test -Dcucumber.options="--tags @${{ github.event.inputs.TEST_TYPE }}_${{ github.event.inputs.ENV }}"
 
       - name: Upload report artifact
         uses: actions/upload-artifact@v3
