@@ -53,10 +53,13 @@ jobs:
         if: ${{inputs.BROWSER == 'Edge' }}
         uses: browser-actions/setup-edge@v1
 
-      - name: Run test cases
+      - name: Install dependencies
+        run: npm install
+  
+      - name: Run demo
         run: |
           cd src/ui-selenium-js
-          bash runFeature_Demo.sh chrome
+          bash runFeature_Demo.sh ${{ inputs.BROWSER | toLowerCase }}
 
       - name: Publish artifact
         uses: actions/upload-artifact@v2
