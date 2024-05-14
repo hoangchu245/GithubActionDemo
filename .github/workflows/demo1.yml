@@ -1,48 +1,46 @@
-name: 1. DEMO - Sample Workflow
-run-name: ${{ github.actor }} is testing out Demo Workflow 🚀
-# on: [push]
+name: 3. DEMO - Automation Test Workflow - API Cucumber Java
 on:
   workflow_dispatch:
-env:
-  color: Green
-  shape: Circle
+  name: on-demand
+    inputs:
+      ENV:
+        type: choice
+        required: true
+        options:
+          - DEV
+          - QA
+          - CT
+          - PROD
+        default: "QA"
+      TEST_TYPE:
+          type: choice
+          required: true
+          options:
+            - SMOKE
+            - SANITY
+            - REGRESSION
 jobs:
-  Job-1:
-    name: Job with GitHub contexts
+  regression-test:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Actor is ${{ github.actor }}"
-      - run: echo "Repository is ${{ github.repository }}"
-      - run: echo "Branch is ${{ github.ref }}"
-      - run: echo "Job ID is ${{ github.job }}"
-  Job-2:
-    name: Job with env contexts
-    runs-on: ubuntu-latest
-    env:
-      shape: Square
-    steps:
-      - run: echo "1. This is the ${{ env.color }} ${{ env.shape }}"
-      - run: echo "2. This is the ${{ env.color }} ${{ env.shape }}"
-        env:
-          color: Red
-          shape: Triangle
-  Job-3:
-    name: Job with vars contexts
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "1. You get a score of ${{ vars.score }}"
-      - run: echo "2. You get a score of ${{ env.score }}"
-        env:
-          score: ${{ vars.score }}
-  Job-4:
-    name: Job with secrets contexts
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      issues: write
-    steps:
-      - run: |
-          gh issue --repo ${{ github.repository }} \
-            create --title "Issue title 2" --body "Issue body B"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    run: echo "BDD Tags: @${{ github.event.inputs.TEST_TYPE }}_${{ github.event.inputs.ENV }}"
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'zulu'
+
+      - name: Test run
+        run: |
+          cd src/api-cucumber-java
+          mvn clean test -Dcucumber.options="--tags @regression_qa"
+
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: regression-test-api-reports
+          path: src/api-cucumber-java/target/maven-cucumber-report/cucumber-html-reports
+          retention-days: 1
