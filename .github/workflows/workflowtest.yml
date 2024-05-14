@@ -55,7 +55,6 @@ jobs:
   
       - name: Run demo
         run: |
-          npm install cucumber
           cd src/ui-selenium-js
           bash runFeature_Demo.sh ${{ inputs.BROWSER }}
 
