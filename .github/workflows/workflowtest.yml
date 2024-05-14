@@ -63,6 +63,12 @@ jobs:
           cd src/ui-selenium-js
           bash runFeature_Demo.sh ${{ inputs.BROWSER }}
 
+      - name: Publish demo logs
+        uses: actions/upload-artifact@v2
+        with:
+          name: DemoLogs
+          path: src/ui-selenium-js/demo_output.log
+
       - name: Publish artifact
         uses: actions/upload-artifact@v2
         with:
