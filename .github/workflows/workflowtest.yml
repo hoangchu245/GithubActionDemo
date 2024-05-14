@@ -7,16 +7,19 @@ on:
       ENV:
         description: 'Environment'
         required: true
+        type: choice
         default: 'DEV'
         options: ['DEV', 'QA', 'CT', 'PROD']
       TEST_TYPE:
         description: 'Test Type'
         required: true
+        type: choice
         default: 'Smoke'
         options: ['Smoke', 'Sanity', 'Regression']
       BROWSER:
         description: 'Browser'
         required: true
+        type: choice
         default: 'Chrome'
         options: ['Chrome', 'Firefox', 'Edge']
 
