@@ -39,7 +39,7 @@ jobs:
       - name: 'Create env file'
         run: |
           touch .env
-          echo {{ inputs.ENV }} >> .env
+          echo API_KEY="${{ inputs.ENV }}" >> .env
           cat .env
       
       - name: Setup Node.js
