@@ -25,9 +25,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }},
-      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+    # env:
+    #   ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }},
+    #   ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -64,8 +64,8 @@ jobs:
       - name: Config .env file with content from repository secrets
         run: |
           touch .env
-          echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}" >> .env
-          echo "ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> .env
+          echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}" >> env
+          echo "ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> env
           cat .env
         
       - name: Install dependencies
