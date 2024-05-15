@@ -63,11 +63,8 @@ jobs:
           touch .env
           echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}" >> .env
           echo "ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> .env
-          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-          echo "HRM_USERNAME_ESS=${{ secrets.HRM_USERNAME_ESS }}" >> .env
-          echo "HRM_PASSWORD_ESS=${{ secrets.HRM_PASSWORD_ESS }}" >> .env
           cat .env
+          echo {{env.ADMIN_USERNAME}}
         
       - name: Install dependencies
         run: |
