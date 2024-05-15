@@ -58,10 +58,13 @@ jobs:
         if: ${{inputs.BROWSER == 'Edge' }}
         uses: browser-actions/setup-edge@v1
 
-      - name: Config .env file with content from repository secrets
+      - name: Retrieve secrets and configure .env
         env:
-          ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }},
+          ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+        run: |
+          echo "ADMIN_USERNAME=${ADMIN_USERNAME}" >> .env
+          echo "ADMIN_PASSWORD=${ADMIN_PASSWORD}" >> .env
         
       - name: Install dependencies
         run: |
