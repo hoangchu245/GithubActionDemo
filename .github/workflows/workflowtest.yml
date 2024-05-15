@@ -61,8 +61,10 @@ jobs:
 
       - name: Config .env file with content from repository secrets
         run: |
+          touch .env
           echo "ADMIN_PASSWORD =${{ secrets.ADMIN_PASSWORD }}" >> .env
           echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}" >> .env
+          cat .env
 
       - name: Install dependencies
         run: |
