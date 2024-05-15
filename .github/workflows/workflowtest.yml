@@ -75,8 +75,8 @@ jobs:
 
       - name: Run demo
         run: |
-          echo "ADMIN_PASSWORD =${{ secrets.ADMIN_PASSWORD }}" >> .env
-          echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}" >> .env
+          echo "ADMIN_PASSWORD =${{ secrets.ADMIN_PASSWORD }}"
+          echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}"
           cd src/ui-selenium-js
           bash runFeature_Demo.sh ${{ inputs.BROWSER }}
 
