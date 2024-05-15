@@ -1,5 +1,7 @@
 name: Automated Testing Workflow
-
+env:
+  ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }},
+  ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
 on:
   workflow_dispatch:
     #2.1 define a workflow_dispatch event with 3 inputs:
@@ -65,9 +67,7 @@ jobs:
           echo "ADMIN_PASSWORD =${{ secrets.ADMIN_PASSWORD }}" >> .env
           echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}" >> .env
           cat .env
-        env:
-          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }},
-          ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+        
       - name: Install dependencies
         run: |
           cd src/ui-selenium-js
