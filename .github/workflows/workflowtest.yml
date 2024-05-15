@@ -62,9 +62,9 @@ jobs:
         env:
           ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
-        run: |
-          echo "ADMIN_USERNAME=${ADMIN_USERNAME}" >> .env
-          echo "ADMIN_PASSWORD=${ADMIN_PASSWORD}" >> .env
+        # run: |
+        #   echo "ADMIN_USERNAME=${ADMIN_USERNAME}" >> .env
+        #   echo "ADMIN_PASSWORD=${ADMIN_PASSWORD}" >> .env
         
       - name: Install dependencies
         run: |
