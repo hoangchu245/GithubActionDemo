@@ -81,8 +81,10 @@ jobs:
           name: DemoLogs
           path: src/ui-selenium-js/demo_output.log
 
-      # - name: Publish artifact
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: TestResults_${{ inputs.TEST_TYPE }}_${{ inputs.ENV }}_${{ inputs.BROWSER }}
-      #     path: path/to/test-results
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: TestResults_${{ inputs.TEST_TYPE }}_${{ inputs.ENV }}_${{ inputs.BROWSER }}
+          path: src/ui-selenium-js/target/maven-cucumber-report/cucumber-html-reports
+          retention-days: 1
