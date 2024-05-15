@@ -65,7 +65,9 @@ jobs:
           echo "ADMIN_PASSWORD =${{ secrets.ADMIN_PASSWORD }}" >> .env
           echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}" >> .env
           cat .env
-
+        env:
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }},
+          ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
       - name: Install dependencies
         run: |
           cd src/ui-selenium-js
@@ -73,6 +75,8 @@ jobs:
 
       - name: Run demo
         run: |
+          echo "ADMIN_PASSWORD =${{ secrets.ADMIN_PASSWORD }}" >> .env
+          echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}" >> .env
           cd src/ui-selenium-js
           bash runFeature_Demo.sh ${{ inputs.BROWSER }}
 
