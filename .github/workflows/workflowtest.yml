@@ -61,8 +61,8 @@ jobs:
 
       - name: Config .env file with content from repository secrets
         run: |
-          echo "HRM_PASSWORD_ADMIN=${{ secrets.HRM_PASSWORD_ADMIN }}" >> .env
-          echo "HRM_PASSWORD_ESS=${{ secrets.HRM_PASSWORD_ESS }}" >> .env
+          echo "ADMIN_PASSWORD =${{ secrets.ADMIN_PASSWORD }}" >> .env
+          echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}" >> .env
 
       - name: Install dependencies
         run: |
