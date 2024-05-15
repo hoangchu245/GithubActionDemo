@@ -1,0 +1,90 @@
+name: Automated Testing Workflow
+on:
+  workflow_dispatch:
+    #2.1 define a workflow_dispatch event with 3 inputs:
+    inputs:
+      ENV:
+        description: 'Environment'
+        required: true
+        type: choice
+        default: 'DEV'
+        options: ['DEV', 'QA', 'CT', 'PROD']
+      TEST_TYPE:
+        description: 'Test Type'
+        required: true
+        type: choice
+        default: 'Smoke'
+        options: ['Smoke', 'Sanity', 'Regression']
+      BROWSER:
+        description: 'Browser'
+        required: true
+        type: choice
+        default: 'Chrome'
+        options: ['Chrome', 'Firefox', 'Edge']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Convert string to uppercase/lowercase
+        run: |
+          echo "${{ inputs.ENV }}" | tr '[:upper:]' '[:lower:]'
+          echo "${{ inputs.TEST_TYPE }}" | tr '[:lower:]' '[:upper:]'
+          echo "${{ inputs.BROWSER }}" | tr '[:lower:]' '[:upper:]'
+
+      - name: 'Create env file'
+        run: |
+          touch .env
+          echo API_KEY="${{ inputs.ENV }}" >> .env
+          cat .env
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.16'
+
+      - name: Setup Browser
+        if: ${{inputs.BROWSER == 'Chrome' }}
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Setup Browser
+        if: ${{inputs.BROWSER == 'Firefox' }}
+        uses: browser-actions/setup-firefox@v1
+
+      - name: Setup Browser
+        if: ${{inputs.BROWSER == 'Edge' }}
+        uses: browser-actions/setup-edge@v1
+
+      - name: Config .env file with content from repository secrets
+        run: |
+          touch .env
+          echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}" >> .env
+          echo "ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> .env
+          cat .env
+          echo ${{env}}
+          echo ${{env.ADMIN_USERNAME}}
+        
+      - name: Install dependencies
+        run: |
+          cd src/ui-selenium-js
+          npm install
+
+      - name: Run demo
+        run: |
+          cd src/ui-selenium-js
+          bash runFeature_Demo.sh ${{ inputs.BROWSER }}
+
+      - name: Publish demo logs
+        uses: actions/upload-artifact@v2
+        with:
+          name: DemoLogs
+          path: src/ui-selenium-js/demo_output.log
+
+      - name: Publish artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: TestResults_${{ inputs.TEST_TYPE }}_${{ inputs.ENV }}_${{ inputs.BROWSER }}
+          path: path/to/test-results
