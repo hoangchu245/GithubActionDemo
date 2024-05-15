@@ -59,6 +59,11 @@ jobs:
         if: ${{inputs.BROWSER == 'Edge' }}
         uses: browser-actions/setup-edge@v1
 
+      - name: Config .env file with content from repository secrets
+        run: |
+          echo "HRM_PASSWORD_ADMIN=${{ secrets.HRM_PASSWORD_ADMIN }}" >> .env
+          echo "HRM_PASSWORD_ESS=${{ secrets.HRM_PASSWORD_ESS }}" >> .env
+
       - name: Install dependencies
         run: |
           cd src/ui-selenium-js
