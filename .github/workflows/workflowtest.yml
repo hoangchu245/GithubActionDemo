@@ -64,8 +64,6 @@ jobs:
           echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}" >> .env
           echo "ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> .env
           cat .env
-          echo ${{env}}
-          echo ${{env.ADMIN_USERNAME}}
         
       - name: Install dependencies
         run: |
@@ -83,8 +81,10 @@ jobs:
           name: DemoLogs
           path: src/ui-selenium-js/demo_output.log
 
-      - name: Publish artifact
-        uses: actions/upload-artifact@v2
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v3
         with:
           name: TestResults_${{ inputs.TEST_TYPE }}_${{ inputs.ENV }}_${{ inputs.BROWSER }}
-          path: path/to/test-results
+          path: src/ui-selenium-js/demo_output.log
+          retention-days: 1
