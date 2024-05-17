@@ -94,5 +94,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: TestResults_${{ inputs.TEST_TYPE }}_${{ inputs.ENV }}_${{ inputs.BROWSER }}
-          path: src/ui-selenium-js/demo_output.log
+          path: src/ui-selenium-js/report/Chrome/index.html
           retention-days: 1
