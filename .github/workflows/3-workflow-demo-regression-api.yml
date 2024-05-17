@@ -23,5 +23,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: regression-test-api-reports
-          path: src/api-cucumber-java/target/maven-cucumber-report/cucumber-html-reports
+          path: src/ui-selenium-js/report/Chrome/index.html
           retention-days: 1
